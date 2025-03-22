@@ -10,7 +10,6 @@ A modern, full-stack project management application built with Next.js, tRPC, an
 - 👥 Team collaboration with role-based access
 - 🎨 Modern UI with Tailwind CSS
 - ⚡ Real-time updates with tRPC
-- 📱 Responsive design for all devices
 
 ## Tech Stack
 
