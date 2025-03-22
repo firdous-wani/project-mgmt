@@ -1,4 +1,6 @@
 # Project Management Application
+<img width="1676" alt="Screenshot 2025-03-22 at 9 02 24 PM" src="https://github.com/user-attachments/assets/5c0ed575-a871-477d-afe8-74db608c4ddc" />
+<img width="1678" alt="Screenshot 2025-03-22 at 9 06 17 PM" src="https://github.com/user-attachments/assets/32f09c2a-50ce-4836-8311-632fad8f133e" />
 
 A modern, full-stack project management application built with Next.js, tRPC, and Tailwind CSS. This application helps teams collaborate effectively by managing projects, tasks, and team members in a user-friendly interface.
 
@@ -53,9 +55,9 @@ A modern, full-stack project management application built with Next.js, tRPC, an
 
 3. Set up environment variables:
    Create a `.env` file in the root directory with the following variables:
-   ```env
+   
 
-AUTH_DISCORD_ID=""
+```AUTH_DISCORD_ID=""
 AUTH_DISCORD_SECRET=""
 
 
