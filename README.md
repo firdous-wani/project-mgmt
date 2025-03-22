@@ -141,26 +141,7 @@ describe('Component', () => {
 });
 ```
 
-## Deployment
 
-### Vercel Deployment
-
-1. Push your code to GitHub
-2. Connect your repository to Vercel
-3. Configure environment variables in Vercel
-4. Deploy!
-
-### Manual Deployment
-
-1. Build the application:
-   ```bash
-   npm run build
-   ```
-
-2. Start the production server:
-   ```bash
-   npm start
-   ```
 
 ### Environment Variables
 
