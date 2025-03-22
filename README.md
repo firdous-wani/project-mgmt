@@ -88,6 +88,94 @@ RESEND_API_KEY=""
 
 The application will be available at `http://localhost:3000`.
 
+
+
+###Deploy to AWS using SST
+
+1. **Install SST CLI**:
+   ```bash
+   npm install -g sst
+   ```
+
+2. **Initialize SST in your project**:
+   ```bash
+   npx create-sst@latest
+   ```
+   Select the following options:
+   - Project name: project-mgmt
+   - Template: Next.js
+   - Region: (your preferred AWS region)
+
+3. **Configure SST**:
+   Create a new file `sst.config.ts` in your project root:
+   ```typescript
+   import { SSTConfig } from "sst";
+   import { NextjsSite, Stack } from "sst/constructs";
+
+   export default {
+     config(_input) {
+       return {
+         name: "project-mgmt",
+         region: "us-east-1",
+       };
+     },
+     stacks(app) {
+       app.stack(function Site({ stack }) {
+         stack.add(
+           new NextjsSite(stack, "site", {
+             path: ".",
+             environment: {
+               DATABASE_URL: process.env.DATABASE_URL!,
+               NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET!,
+               NEXTAUTH_URL: process.env.NEXTAUTH_URL!,
+               GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID!,
+               GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET!,
+             },
+           })
+         );
+       });
+     },
+   } satisfies SSTConfig;
+   ```
+
+4. **Update package.json**:
+   Add these scripts:
+   ```json
+   {
+     "scripts": {
+       "sst:dev": "sst dev",
+       "sst:build": "sst build",
+       "sst:deploy": "sst deploy",
+       "sst:remove": "sst remove"
+     }
+   }
+   ```
+
+5. **Configure AWS Credentials**:
+   ```bash
+   aws configure
+   ```
+   Enter your AWS access key ID and secret access key.
+
+6. **Deploy the Application**:
+   ```bash
+   # Start local development
+   npm run sst:dev
+
+   # Deploy to AWS
+   npm run sst:deploy
+   ```
+
+7. **Set up Database**:
+   - Create an RDS PostgreSQL instance in AWS
+   - Update the DATABASE_URL in SST environment variables
+   - Run migrations:
+     ```bash
+     npx prisma migrate deploy
+     ```
+
+
+
 ## Project Structure
 
 ```
