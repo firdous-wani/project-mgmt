@@ -5,11 +5,14 @@ import { Project, ProjectStatus } from '@/types/project';
 interface CreateProjectData {
   name: string;
   description?: string;
-  status: ProjectStatus;
+  status?: "active" | "completed" | "archived";
 }
 
-interface UpdateProjectData extends Partial<CreateProjectData> {
+interface UpdateProjectData {
   id: string;
+  name?: string;
+  description?: string;
+  status?: "active" | "completed" | "archived";
 }
 
 export function useProject() {
@@ -17,32 +20,32 @@ export function useProject() {
   const [isLoading, setIsLoading] = useState(false);
 
   const utils = api.useContext();
-  const { data: projects, isLoading: isLoadingProjects } = api.project.list.useQuery();
+  const { data: projects, isLoading: isLoadingProjects } = api.project.getAll.useQuery();
 
   const createProjectMutation = api.project.create.useMutation({
     onSuccess: () => {
-      utils.project.list.invalidate();
+      utils.project.getAll.invalidate();
     },
-    onError: (error: Error) => {
-      setError(error.message);
+    onError: (err) => {
+      setError(err.message);
     },
   });
 
   const updateProjectMutation = api.project.update.useMutation({
     onSuccess: () => {
-      utils.project.list.invalidate();
+      utils.project.getAll.invalidate();
     },
-    onError: (error: Error) => {
-      setError(error.message);
+    onError: (err) => {
+      setError(err.message);
     },
   });
 
   const deleteProjectMutation = api.project.delete.useMutation({
     onSuccess: () => {
-      utils.project.list.invalidate();
+      utils.project.getAll.invalidate();
     },
-    onError: (error: Error) => {
-      setError(error.message);
+    onError: (err) => {
+      setError(err.message);
     },
   });
 
