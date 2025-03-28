@@ -14,7 +14,7 @@ export default function SignUp() {
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
-  const signUp = api.user.signUp.useMutation({
+  const signUp = api.users.signUp.useMutation({
     onSuccess: async () => {
       // After successful signup, sign in the user
       const result = await signIn("credentials", {
@@ -32,8 +32,8 @@ export default function SignUp() {
       // Redirect to dashboard
       void router.push("/dashboard");
     },
-    onError: (error) => {
-      setError(error.message);
+    onError: (err) => {
+      setError(err.message);
       setIsLoading(false);
     },
   });

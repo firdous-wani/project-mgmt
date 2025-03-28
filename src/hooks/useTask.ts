@@ -11,7 +11,7 @@ interface CreateTaskData {
   description?: string;
   status: TaskStatus;
   priority: TaskPriority;
-  dueDate?: string;
+  dueDate?: Date;
   assigneeId?: string;
 }
 
@@ -24,32 +24,32 @@ export function useTask({ projectId }: UseTaskOptions) {
   const [isLoading, setIsLoading] = useState(false);
 
   const utils = api.useContext();
-  const { data: tasks, isLoading: isLoadingTasks } = api.task.list.useQuery({ projectId });
+  const { data: tasks, isLoading: isLoadingTasks } = api.task.getByProject.useQuery({ projectId });
 
   const createTaskMutation = api.task.create.useMutation({
     onSuccess: () => {
-      utils.task.list.invalidate({ projectId });
+      utils.task.getByProject.invalidate({ projectId });
     },
-    onError: (error) => {
-      setError(error.message);
+    onError: (err) => {
+      setError(err.message);
     },
   });
 
   const updateTaskMutation = api.task.update.useMutation({
     onSuccess: () => {
-      utils.task.list.invalidate({ projectId });
+      utils.task.getByProject.invalidate({ projectId });
     },
-    onError: (error) => {
-      setError(error.message);
+    onError: (err) => {
+      setError(err.message);
     },
   });
 
   const deleteTaskMutation = api.task.delete.useMutation({
     onSuccess: () => {
-      utils.task.list.invalidate({ projectId });
+      utils.task.getByProject.invalidate({ projectId });
     },
-    onError: (error) => {
-      setError(error.message);
+    onError: (err) => {
+      setError(err.message);
     },
   });
 
@@ -60,6 +60,7 @@ export function useTask({ projectId }: UseTaskOptions) {
       await createTaskMutation.mutateAsync({
         ...data,
         projectId,
+        dueDate: data.dueDate ? new Date(data.dueDate) : undefined,
       });
     } catch (err) {
       // Error is handled by the mutation
@@ -72,7 +73,10 @@ export function useTask({ projectId }: UseTaskOptions) {
     setIsLoading(true);
     setError(null);
     try {
-      await updateTaskMutation.mutateAsync(data);
+      await updateTaskMutation.mutateAsync({
+        ...data,
+        dueDate: data.dueDate ? new Date(data.dueDate) : undefined,
+      });
     } catch (err) {
       // Error is handled by the mutation
     } finally {
